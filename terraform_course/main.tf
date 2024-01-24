@@ -1,20 +1,42 @@
 
 resource "aws_instance" "server" {
 
-    ami = "ami-0c7217cdde317cfec"
-    instance_type = "t2.micro"
-    provider = aws.west #alias
+    ami = var.os
+    instance_type = var.size
 
     tags = {
-      Name ="MyFirstServer"
+      Name =var.name
     }
 }
 
+#s3 bucket
+resource "aws_s3_bucket" "bucket" {
+  
+  bucket = var.bucketname
+}
 
 
-resource "github_repository" "example" {
+# IAM user
+
+resource "aws_iam_user" "myuser" {
+  
+  name = "${var.username}-user"
+}
+
+
+#output block
+
+output "IPaddress" {
+  value = aws_instance.server.public_ip
+}
+
+output "DNS" {
+  value =aws_instance.server.public_dns
+}
+
+/*resource "github_repository" "example" {
   name        = "My_github_repo"
   description = "This repo is created using Terraform"
    
 visibility = "public"
-}
+}*/
