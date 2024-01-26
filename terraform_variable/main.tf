@@ -2,22 +2,32 @@
 
 resource "aws_instance" "server" {
 
-    ami = "ami-0c7217cdde317cfec"
-    instance_type = "t2.micro"
+    ami = var.ami_id
+    instance_type = var.instance_type
     provider = aws.east
 
    tags = {
-     name ="example"
+     Name = var.name
    }
   
 }
 
+resource "aws_instance" "web" {
+  ami           = var.ami_id
+  instance_type = var.instance_type
+
+  tags = {
+    Name = "HelloWorld"
+  }
+}
+
 resource "aws_instance" "server1" {
-    ami = "ami-0e534e4c6bae7faf7"
-    instance_type = "t2.micro"
+    ami = var.ami_id
+    instance_type = var.instance_type
     provider = aws.west
 
     tags = {
-      name ="example1"
+      Name =var.name1
     }
 }
+
